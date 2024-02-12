@@ -108,7 +108,7 @@ alias nvimconfig="vi ~/.config/nvim"
 alias tmuxconfig="vi ~/.config/tmux"
 
 # SSH Agent
-eval ``keychain --eval --agents ssh 
+eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
 
 # pnpm
 export PNPM_HOME="/home/james/.local/share/pnpm"
