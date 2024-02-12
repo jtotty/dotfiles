@@ -1,13 +1,6 @@
 lastupdatecheck: 0
 recentrepos:
 - /home/james/dotfiles
-- /home/james/repositories/Speechlink/speechlink-assessment-engine
-- /home/james/repositories/Learning/weather-cli
-- /home/james/repositories/Speechlink/speechlink-primary-upgrades
-- /home/james/repositories/Learning/js-perf-example
-- /home/james/repositories/Speechlink/speechlink-assessment-engine-v3
-- /home/james/repositories/Speechlink/speechlink-therapy-assessments-lite
-- /home/james/repositories/Speechlink/laravel-shadcn
 startuppopupversion: 5
 customcommandshistory:
 - q
