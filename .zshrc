@@ -106,6 +106,7 @@ alias lg="lazygit"
 alias zshconfig="vi ~/.zshrc"
 alias nvimconfig="vi ~/.config/nvim"
 alias tmuxconfig="vi ~/.config/tmux"
+alias starshipconfig="vi ~/.config/starship/starship.toml"
 
 # SSH Agent
 eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
@@ -134,3 +135,6 @@ esac
 
 # Composer
 export PATH=~/.config/composer/vendor/bin:$PATH
+
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init zsh)"
