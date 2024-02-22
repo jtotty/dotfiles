@@ -136,5 +136,8 @@ esac
 # Composer
 export PATH=~/.config/composer/vendor/bin:$PATH
 
+[ -n "$TMUX" ] && export TERM=screen-256color
+
+# Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
