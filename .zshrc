@@ -1,3 +1,5 @@
+echo "ZSH config loaded..."
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -103,10 +105,10 @@ alias vi="nvim"
 alias vim="nvim"
 alias sail="[ -f sail ] && sh sail || sh vendor/bin/sail"
 alias lg="lazygit"
-alias zshconfig="vi ~/.zshrc"
-alias nvimconfig="vi ~/.config/nvim"
-alias tmuxconfig="vi ~/.config/tmux"
-alias starshipconfig="vi ~/.config/starship/starship.toml"
+alias zshconfig="vi ~/dotfiles/.zshrc"
+alias nvimconfig="vi ~/dotfiles/.config/nvim"
+alias tmuxconfig="vi ~/dotfiles/.config/tmux"
+alias starshipconfig="vi ~/dotfiles/.config/starship/starship.toml"
 
 # SSH Agent
 eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
@@ -135,8 +137,6 @@ esac
 
 # Composer
 export PATH=~/.config/composer/vendor/bin:$PATH
-
-[ -n "$TMUX" ] && export TERM=screen-256color
 
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml

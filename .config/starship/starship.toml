@@ -1,10 +1,89 @@
+# Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
+add_newline = true
+
+format = """
+$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$git_metrics\
+$fill\
+$lua\
+$nodejs\
+$golang\
+$rust\
+$php\
+$cmd_duration\
+$jobs\
+$time\
+$line_break\
+$character"""
+
+[character]
+success_symbol = "[➜](purple)"
+error_symbol = "[➜](red)"
+vicmd_symbol = "[➜](green)"
+
+[fill]
+symbol = " "
+
 [directory]
-format = "[$path]($style)[$read_only]($read_only_style) "
+read_only = " "
 truncation_length = 4
 truncate_to_repo = false
 truncation_symbol = "…/"
 
-[package]
-disabled = true
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+# style = "bold bright-black"
+# format = "[$time ]($style)"
+style = "#a0a9cb"
+format = '[ $time ]($style)'
+
+# Languages & Environments
+[os]
+disabled = false 
+format = "[$symbol]($style)"
+
+[os.symbols]
+Ubuntu = " " 
+
+[nodejs]
+style = "#66CC33"
+format = "[$symbol($version )]($style)"
+
+[php]
+symbol = ""
+style = "#B0B3D6"
+format = "[$symbol ($version )]($style)"
+
+[golang]
+symbol = ""
+style = "#00ADD8"
+format = "[$symbol ($version )]($style)"
+
+[rust]
+symbol = ""
+style = "#E43716"
+format = "[$symbol ($version )]($style)"
+
+[python]
+symbol =""
+style = "#FFDE57"
+format = "[$symbol ($version )]($style)"
