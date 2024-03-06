@@ -1,13 +1,13 @@
 return {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
     dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons",
-        "MunifTanjim/nui.nvim",
+        'nvim-lua/plenary.nvim',
+        'nvim-tree/nvim-web-devicons',
+        'MunifTanjim/nui.nvim',
     },
     config = function()
-        require("neo-tree").setup({
+        require('neo-tree').setup {
             filesystem = {
                 filtered_items = {
                     visible = true,
@@ -15,9 +15,9 @@ return {
                     hide_gitignored = false,
                 },
             },
-        })
+        }
 
-        vim.keymap.set("n", "<C-n>", ":Neotree filesystem reveal left<CR>", {})
-        vim.keymap.set("n", "<leader>bf", ":Neotree buffers reveal float<CR>", {})
+        vim.keymap.set('n', '<C-f>', ':Neotree filesystem reveal left<CR>', {})
+        vim.keymap.set('n', '<leader>bf', ':Neotree buffers reveal float<CR>', {})
     end,
 }
