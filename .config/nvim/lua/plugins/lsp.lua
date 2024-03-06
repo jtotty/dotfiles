@@ -103,7 +103,13 @@ return {
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-        local util = require 'lspconfig/util'
+        local lspconfig = require 'lspconfig'
+
+        -- Used for the Vue Volar lsp setup
+        local function get_typescript_server_path(root_dir)
+            local project_root = lspconfig.util.find_node_modules_ancestor(root_dir)
+            return project_root and (lspconfig.util.path.join(project_root, 'node_modules', 'typescript', 'lib')) or ''
+        end
 
         local servers = {
             lua_ls = {
@@ -128,7 +134,7 @@ return {
             },
             gopls = {
                 cmd = { 'gopls' },
-                root_dir = util.root_pattern('go.work', 'go.mod', '.git'),
+                root_dir = lspconfig.util.root_pattern('go.work', 'go.mod', '.git'),
                 filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
                 settings = {
                     gopls = {
@@ -140,10 +146,34 @@ return {
                     },
                 },
             },
-            html = {},
-            cssls = {},
             tailwindcss = {},
             tsserver = {},
+            cssls = {
+                settings = {
+                    -- Tailwind @apply rule
+                    css = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                    scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                    vue = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                },
+            },
+            html = {},
+            volar = {
+                -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/volar.lua
+                cmd = { 'vue-language-server', '--stdio' },
+                filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
+                root_dir = lspconfig.util.root_pattern 'package.json',
+                init_options = {
+                    typescript = {
+                        tsdk = '',
+                    },
+                },
+                -- Takeover Mode
+                on_new_config = function(new_config, new_root_dir)
+                    if new_config.init_options and new_config.init_options.typescript and new_config.init_options.typescript.tsdk == '' then
+                        new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+                    end
+                end,
+            },
         }
 
         require('mason').setup()
@@ -166,7 +196,7 @@ return {
                     -- by the server configuration above. Useful when disabling
                     -- certain features of an LSP (for example, turning off formatting for tsserver)
                     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                    require('lspconfig')[server_name].setup(server)
+                    lspconfig[server_name].setup(server)
                 end,
             },
         }
