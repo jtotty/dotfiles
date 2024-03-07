@@ -113,13 +113,6 @@ alias starshipconfig="vi ~/dotfiles/.config/starship/starship.toml"
 # SSH Agent
 eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
 
-# pnpm
-export PNPM_HOME="/home/james/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 # Rust
 . "$HOME/.cargo/env"
 

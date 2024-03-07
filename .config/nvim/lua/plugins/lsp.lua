@@ -105,7 +105,7 @@ return {
 
         local lspconfig = require 'lspconfig'
 
-        -- Used for the Vue Volar lsp setup
+        -- Used for the Vue Volar LSP setup
         local function get_typescript_server_path(root_dir)
             local project_root = lspconfig.util.find_node_modules_ancestor(root_dir)
             return project_root and (lspconfig.util.path.join(project_root, 'node_modules', 'typescript', 'lib')) or ''
@@ -146,34 +146,38 @@ return {
                     },
                 },
             },
-            tailwindcss = {},
             tsserver = {},
-            cssls = {
+            volar = {
+                -- NOTE: Currently using `vue-language-server@1.8.27` as ^2.0 doesn't seem to work at all
+                -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/volar.lua
+                cmd = { 'vue-language-server', '--stdio' },
+                root_dir = lspconfig.util.root_pattern 'package.json',
+                filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }, -- Takeover Mode
                 settings = {
                     -- Tailwind @apply rule
                     css = { validate = true, lint = { unknownAtRules = 'ignore' } },
                     scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
-                    vue = { validate = true, lint = { unknownAtRules = 'ignore' } },
                 },
-            },
-            html = {},
-            volar = {
-                -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/volar.lua
-                cmd = { 'vue-language-server', '--stdio' },
-                filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' },
-                root_dir = lspconfig.util.root_pattern 'package.json',
                 init_options = {
                     typescript = {
                         tsdk = '',
                     },
                 },
-                -- Takeover Mode
                 on_new_config = function(new_config, new_root_dir)
                     if new_config.init_options and new_config.init_options.typescript and new_config.init_options.typescript.tsdk == '' then
                         new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
                     end
                 end,
             },
+            tailwindcss = {},
+            cssls = {
+                settings = {
+                    -- Tailwind @apply rule
+                    css = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                    scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                },
+            },
+            html = {},
         }
 
         require('mason').setup()
@@ -181,13 +185,9 @@ return {
         local ensure_installed = vim.tbl_keys(servers or {})
         vim.list_extend(ensure_installed, {
             'stylua',
-            'tailwindcss-language-server',
-            'typescript-language-server',
-            'vue-language-server',
-            'css-lsp',
         })
-        require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
+        require('mason-tool-installer').setup { ensure_installed = ensure_installed }
         require('mason-lspconfig').setup {
             handlers = {
                 function(server_name)
