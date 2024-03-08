@@ -10,8 +10,20 @@ return {
         formatters_by_ft = {
             lua = { 'stylua' },
             go = { 'goimports-reviser', 'gofumpt' },
+            php = { 'php' },
             javascript = { 'prettierd' },
             vue = { 'prettierd' },
+        },
+        formatters = {
+            php = {
+                command = 'php-cs-fixer',
+                args = {
+                    'fix',
+                    '$FILENAME',
+                    '--config=/home/james/.config/php-cs-fixer/config.php',
+                },
+                stdin = false,
+            },
         },
     },
 }

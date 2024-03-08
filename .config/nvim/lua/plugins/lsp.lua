@@ -23,6 +23,9 @@ return {
 
         -- Useful status updates for LSP
         { 'j-hui/fidget.nvim', opts = {} },
+
+        -- Provide SchemaStore catalog for jsonls and yamlls
+        'b0o/schemastore.nvim',
     },
     config = function()
         -- Runs when the LSP attaches to a particular buffer
@@ -146,10 +149,10 @@ return {
                     },
                 },
             },
-            tsserver = {},
             volar = {
                 -- NOTE: Currently using `vue-language-server@1.8.27` as ^2.0 doesn't seem to work at all
                 -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/volar.lua
+                -- Volar wraps around the tsserver so we will use it in "Takeover" mode
                 cmd = { 'vue-language-server', '--stdio' },
                 root_dir = lspconfig.util.root_pattern 'package.json',
                 filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }, -- Takeover Mode
@@ -168,6 +171,39 @@ return {
                         new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
                     end
                 end,
+            },
+            intelephense = {
+                filetypes = { 'php' },
+                root_dir = lspconfig.util.root_pattern 'composer.json',
+                settings = {
+                    intelephense = {
+                        files = {
+                            maxSize = 1000000,
+                        },
+                    },
+                },
+            },
+            jsonls = {
+                settings = {
+                    json = {
+                        schemas = require('schemastore').json.schemas(),
+                        validate = { enable = true },
+                    },
+                },
+            },
+            yamlls = {
+                settings = {
+                    yaml = {
+                        schemaStore = {
+                            -- You must disable built-in schemaStore support if you want to use
+                            -- this plugin and its advanced options like `ignore`.
+                            enable = false,
+                            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+                            url = '',
+                        },
+                        schemas = require('schemastore').yaml.schemas(),
+                    },
+                },
             },
             tailwindcss = {},
             cssls = {
