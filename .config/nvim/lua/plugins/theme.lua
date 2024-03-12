@@ -1,5 +1,4 @@
 return {
-    -- Main Colour Theme
     {
         'folke/tokyonight.nvim',
         lazy = false, -- make sure it's loaded during startup
