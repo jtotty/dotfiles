@@ -104,6 +104,7 @@ source $ZSH/oh-my-zsh.sh
 alias vi="nvim"
 alias vim="nvim"
 alias sail="[ -f sail ] && sh sail || sh vendor/bin/sail"
+alias sa="sail artisan"
 alias lg="lazygit"
 alias zshconfig="vi ~/dotfiles/.zshrc"
 alias nvimconfig="vi ~/dotfiles/.config/nvim"
