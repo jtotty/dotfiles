@@ -7,6 +7,7 @@ recentrepos:
 - /home/james/repos/Speechlink/speechlink-primary
 startuppopupversion: 5
 customcommandshistory:
+- qa
 - q
 hidecommandlog: false
 ignorewhitespaceindiffview: false

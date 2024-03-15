@@ -110,6 +110,7 @@ alias zshconfig="vi ~/dotfiles/.zshrc"
 alias nvimconfig="vi ~/dotfiles/.config/nvim"
 alias tmuxconfig="vi ~/dotfiles/.config/tmux"
 alias starshipconfig="vi ~/dotfiles/.config/starship/starship.toml"
+alias wzconfig="vi /mnt/c/Users/jttot/.wezterm.lua"
 
 # SSH Agent
 eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
