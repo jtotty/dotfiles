@@ -6,8 +6,6 @@ return {
             options = {
                 globalstatus = true,
                 theme = 'auto',
-                section_separators = '',
-                component_separators = '',
             },
         }
     end,
