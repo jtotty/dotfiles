@@ -8,6 +8,12 @@ return {
                 style = 'night',
                 transparent = false,
                 dim_inactive = true,
+                styles = {
+                    sidesbars = 'dark',
+                    floats = 'dark',
+                },
+                sidebars = { 'neo-tree' },
+                lualine_bold = true,
             }
 
             vim.cmd.colorscheme 'tokyonight'
