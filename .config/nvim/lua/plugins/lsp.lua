@@ -108,12 +108,6 @@ return {
 
         local lspconfig = require 'lspconfig'
 
-        -- Used for the Vue Volar LSP setup
-        local function get_typescript_server_path(root_dir)
-            local project_root = lspconfig.util.find_node_modules_ancestor(root_dir)
-            return project_root and (lspconfig.util.path.join(project_root, 'node_modules', 'typescript', 'lib')) or ''
-        end
-
         local servers = {
             lua_ls = {
                 settings = {
@@ -149,28 +143,18 @@ return {
                     },
                 },
             },
-            volar = {
-                -- NOTE: Currently using `vue-language-server@1.8.27` as ^2.0 doesn't seem to work at all
-                -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/volar.lua
-                -- Volar wraps around the tsserver so we will use it in "Takeover" mode
-                cmd = { 'vue-language-server', '--stdio' },
-                root_dir = lspconfig.util.root_pattern 'package.json',
-                filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }, -- Takeover Mode
-                settings = {
-                    -- Tailwind @apply rule
-                    css = { validate = true, lint = { unknownAtRules = 'ignore' } },
-                    scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+            tsserver = {
+                filetypes = {
+                    'javascript',
+                    'typescript',
+                    'json',
+                    'vue',
+                    'javascriptreact',
+                    'typescriptreact',
                 },
                 init_options = {
-                    typescript = {
-                        tsdk = '',
-                    },
+                    plugins = {}, -- We sort out plugins later programmatically
                 },
-                on_new_config = function(new_config, new_root_dir)
-                    if new_config.init_options and new_config.init_options.typescript and new_config.init_options.typescript.tsdk == '' then
-                        new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
-                    end
-                end,
             },
             intelephense = {
                 filetypes = { 'php' },
@@ -215,6 +199,27 @@ return {
             },
             html = {},
         }
+
+        -- NOTE: Adding full LSP support for Vue files instead of using the recommened Volar package
+        -- with takeover mode as that sucks after version ^2.0 with nvim
+        local pnpm_global_path = vim.fn.systemlist 'pnpm ls -g --depth=0'
+        local vue_ts_plugin_path = string.format('%s/@vue/typescript-plugin', pnpm_global_path[3])
+
+        if servers.tsserver ~= nil and vim.fn.isdirectory(vue_ts_plugin_path) then
+            local tsserver = servers.tsserver or {}
+            tsserver.init_options = tsserver.init_options or {}
+            tsserver.init_options.plugins = tsserver.init_options.plugins or {}
+
+            local vue_plugin = {
+                name = '@vue/typescript-plugin',
+                location = vue_ts_plugin_path,
+                languages = { 'vue' },
+            }
+
+            vim.list_extend(tsserver.init_options.plugins, { vue_plugin })
+
+            servers.tsserver = tsserver
+        end
 
         require('mason').setup()
 
