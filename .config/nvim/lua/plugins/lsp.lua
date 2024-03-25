@@ -147,7 +147,6 @@ return {
                 filetypes = {
                     'javascript',
                     'typescript',
-                    'json',
                     'vue',
                     'javascriptreact',
                     'typescriptreact',
@@ -156,6 +155,7 @@ return {
                     plugins = {}, -- We sort out plugins later programmatically
                 },
             },
+            volar = {}, -- Needed for Vue <template> in SFC
             intelephense = {
                 filetypes = { 'php' },
                 root_dir = lspconfig.util.root_pattern 'composer.json',
@@ -200,7 +200,7 @@ return {
             html = {},
         }
 
-        -- NOTE: Adding full LSP support for Vue files instead of using the recommened Volar package
+        -- NOTE: Adding full LSP support for Vue SFC instead of using the recommened Volar package
         -- with takeover mode as that sucks after version ^2.0 with nvim
         local pnpm_global_path = vim.fn.systemlist 'pnpm ls -g --depth=0'
         local vue_ts_plugin_path = string.format('%s/@vue/typescript-plugin', pnpm_global_path[3])

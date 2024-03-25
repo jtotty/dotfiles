@@ -101,6 +101,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias p="pnpm"
+alias px="pnpm dlx" # Equivalent to npx
 alias vi="nvim"
 alias vim="nvim"
 alias sail="[ -f sail ] && sh sail || sh vendor/bin/sail"
