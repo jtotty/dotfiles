@@ -6,7 +6,6 @@ return {
             timeout_ms = 500,
             lsp_fallback = true,
         },
-        -- TODO: Add more formatters
         formatters_by_ft = {
             lua = { 'stylua' },
             go = { 'goimports-reviser', 'gofumpt' },
