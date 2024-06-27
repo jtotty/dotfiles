@@ -60,7 +60,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 -- This option changes how text is displayed.  It doesn't change the text in the buffer
-vim.opt.wrap = false
+vim.opt.wrap = true
 
 -- When there is a previous search pattern, highlight all its matches
 vim.opt.hlsearch = false

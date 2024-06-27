@@ -1,5 +1,7 @@
 echo "ZSH config loaded..."
 
+export TERM=screen-256color
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -121,9 +123,8 @@ eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
 . "$HOME/.cargo/env"
 
 # Go
-export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 # pnpm
 export PNPM_HOME="/home/james/.local/share/pnpm"

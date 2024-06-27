@@ -136,7 +136,7 @@ return {
                 settings = {
                     gopls = {
                         completeUnimported = true, -- Auto import packages when we use auto-complete
-                        usePlaceholders = true, -- Adds parameters and fiels automatically
+                        usePlaceholders = true, -- Adds parameters and fields automatically
                         analyses = {
                             unusedparams = true,
                         },
@@ -144,6 +144,7 @@ return {
                 },
             },
             tsserver = {
+                root_dir = lspconfig.util.root_pattern('package.json', '.git'),
                 filetypes = {
                     'javascript',
                     'typescript',
@@ -152,10 +153,18 @@ return {
                     'typescriptreact',
                 },
                 init_options = {
+                    preferences = { includeCompletionsForModuleExports = false }, -- NOTE: Help with the lag over time?
                     plugins = {}, -- We sort out plugins later programmatically
                 },
             },
-            volar = {}, -- Needed for Vue <template> in SFC
+            volar = {
+                root_dir = lspconfig.util.root_pattern('package.json', '.git'),
+                settings = {
+                    -- Tailwind @apply rule
+                    css = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                    scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+                },
+            }, -- Needed for Vue <template> in SFC
             intelephense = {
                 filetypes = { 'php' },
                 root_dir = lspconfig.util.root_pattern 'composer.json',
@@ -200,8 +209,9 @@ return {
             html = {},
         }
 
-        -- NOTE: Adding full LSP support for Vue SFC instead of using the recommened Volar package
-        -- with takeover mode as that sucks after version ^2.0 with nvim
+        -- INFO: TypeScript support As of release 2.0.0, Volar no longer wraps around tsserver.
+        -- For typescript support, tsserver needs to be configured with the @vue/typescript-plugin plugin.
+        -- WARNING: The @vue/typescript-plugin version has to match Volar (vue-language-server)!
         local pnpm_global_path = vim.fn.systemlist 'pnpm ls -g --depth=0'
         local vue_ts_plugin_path = string.format('%s/@vue/typescript-plugin', pnpm_global_path[3])
 
@@ -213,7 +223,7 @@ return {
             local vue_plugin = {
                 name = '@vue/typescript-plugin',
                 location = vue_ts_plugin_path,
-                languages = { 'vue' },
+                languages = { 'javascript', 'typescript', 'vue' },
             }
 
             vim.list_extend(tsserver.init_options.plugins, { vue_plugin })
