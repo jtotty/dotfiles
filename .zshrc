@@ -115,6 +115,7 @@ alias nvimconfig="vi ~/dotfiles/.config/nvim/"
 alias tmuxconfig="vi ~/dotfiles/.config/tmux/tmux.conf"
 alias starshipconfig="vi ~/dotfiles/.config/starship/starship.toml"
 alias wzconfig="vi /mnt/c/Users/jttot/.wezterm.lua"
+alias sfiles='fzf --preview="batcat --color=always --style=numbers --theme=1337 {}"'
 
 # SSH Agent
 eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
@@ -139,3 +140,13 @@ export PATH=~/.config/composer/vendor/bin:$PATH
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/home/james/.bun/_bun" ] && source "/home/james/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# fzf
+source <(fzf --zsh)

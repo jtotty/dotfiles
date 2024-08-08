@@ -15,8 +15,11 @@ return {
             'go',
             'rust',
             'php',
+            'php_only',
+            'bash',
             'vue',
             'yaml',
+            'blade',
         },
         auto_install = true,
         indent = { enable = true },
@@ -26,9 +29,6 @@ return {
         },
     },
     config = function(_, opts)
-        -- see `:help nvim-treesitter`
-        require('nvim-treesitter.configs').setup(opts)
-
         -- NOTE: Laravel Blade workaround, might not work
         local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
 
@@ -47,5 +47,8 @@ return {
                 ['.*%.blade%.php'] = 'blade',
             },
         }
+
+        -- see `:help nvim-treesitter`
+        require('nvim-treesitter.configs').setup(opts)
     end,
 }
