@@ -35,6 +35,19 @@ return {
             vim.cmd.colorscheme 'cyberdream'
         end,
     },
+    -- {
+    --     'AlexvZyl/nordic.nvim',
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         require('nordic').setup {
+    --             bold_keywords = true,
+    --             transparent_bg = true,
+    --         }
+    --
+    --         vim.cmd.colorscheme 'nordic'
+    --     end,
+    -- },
     -- Highlight todo, notes, etc in comments
     {
         'folke/todo-comments.nvim',
