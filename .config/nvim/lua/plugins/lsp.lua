@@ -1,7 +1,7 @@
 -- Language Server Protocol setup.
 -- A protocal that helps editors and language tooling communicate in a standardised fashion.
 --
--- You have a "server" (such as gopls, rust_analyzer, tsserver) that understands a particular language.
+-- You have a "server" (such as gopls, rust_analyzer, ts_ls) that understands a particular language.
 -- The servers communicate with a "client" (Neovim, VSCode)
 --
 -- LSP provides Neovim with features like:
@@ -136,14 +136,14 @@ return {
                 settings = {
                     gopls = {
                         completeUnimported = true, -- Auto import packages when we use auto-complete
-                        usePlaceholders = true, -- Adds parameters and fields automatically
+                        usePlaceholders = true,    -- Adds parameters and fields automatically
                         analyses = {
                             unusedparams = true,
                         },
                     },
                 },
             },
-            tsserver = {
+            ts_ls = {
                 root_dir = lspconfig.util.root_pattern('package.json', '.git'),
                 filetypes = {
                     'javascript',
@@ -154,7 +154,7 @@ return {
                 },
                 init_options = {
                     preferences = { includeCompletionsForModuleExports = false }, -- NOTE: Help with the lag over time?
-                    plugins = {}, -- We sort out plugins later programmatically
+                    plugins = {},                                                 -- We sort out plugins later programmatically
                 },
             },
             volar = {
@@ -209,16 +209,16 @@ return {
             html = {},
         }
 
-        -- INFO: TypeScript support As of release 2.0.0, Volar no longer wraps around tsserver.
-        -- For typescript support, tsserver needs to be configured with the @vue/typescript-plugin plugin.
+        -- INFO: TypeScript support As of release 2.0.0, Volar no longer wraps around ts_ls.
+        -- For typescript support, ts_ls needs to be configured with the @vue/typescript-plugin plugin.
         -- WARNING: The @vue/typescript-plugin version has to match Volar (vue-language-server)!
         local pnpm_global_path = vim.fn.systemlist 'pnpm ls -g --depth=0'
         local vue_ts_plugin_path = string.format('%s/@vue/typescript-plugin', pnpm_global_path[3])
 
-        if servers.tsserver ~= nil and vim.fn.isdirectory(vue_ts_plugin_path) then
-            local tsserver = servers.tsserver or {}
-            tsserver.init_options = tsserver.init_options or {}
-            tsserver.init_options.plugins = tsserver.init_options.plugins or {}
+        if servers.ts_ls ~= nil and vim.fn.isdirectory(vue_ts_plugin_path) then
+            local ts_ls = servers.ts_ls or {}
+            ts_ls.init_options = ts_ls.init_options or {}
+            ts_ls.init_options.plugins = ts_ls.init_options.plugins or {}
 
             local vue_plugin = {
                 name = '@vue/typescript-plugin',
@@ -226,9 +226,9 @@ return {
                 languages = { 'javascript', 'typescript', 'vue' },
             }
 
-            vim.list_extend(tsserver.init_options.plugins, { vue_plugin })
+            vim.list_extend(ts_ls.init_options.plugins, { vue_plugin })
 
-            servers.tsserver = tsserver
+            servers.ts_ls = ts_ls
         end
 
         require('mason').setup()
@@ -248,7 +248,7 @@ return {
                     local server = servers[server_name] or {}
                     -- This handles overriding only values explicitly passed
                     -- by the server configuration above. Useful when disabling
-                    -- certain features of an LSP (for example, turning off formatting for tsserver)
+                    -- certain features of an LSP (for example, turning off formatting for ts_ls)
                     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
                     lspconfig[server_name].setup(server)
                 end,
