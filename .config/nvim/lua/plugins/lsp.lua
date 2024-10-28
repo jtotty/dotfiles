@@ -129,6 +129,12 @@ return {
                     },
                 },
             },
+            ruby_lsp = {
+                init_options = {
+                    formatter = 'standard',
+                    linters = { 'standard' },
+                },
+            },
             gopls = {
                 cmd = { 'gopls' },
                 root_dir = lspconfig.util.root_pattern('go.work', 'go.mod', '.git'),
@@ -136,7 +142,7 @@ return {
                 settings = {
                     gopls = {
                         completeUnimported = true, -- Auto import packages when we use auto-complete
-                        usePlaceholders = true,    -- Adds parameters and fields automatically
+                        usePlaceholders = true, -- Adds parameters and fields automatically
                         analyses = {
                             unusedparams = true,
                         },
@@ -154,7 +160,7 @@ return {
                 },
                 init_options = {
                     preferences = { includeCompletionsForModuleExports = false }, -- NOTE: Help with the lag over time?
-                    plugins = {},                                                 -- We sort out plugins later programmatically
+                    plugins = {}, -- We sort out plugins later programmatically
                 },
             },
             volar = {

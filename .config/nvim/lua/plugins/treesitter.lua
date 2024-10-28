@@ -14,6 +14,7 @@ return {
             'lua',
             'go',
             'rust',
+            'ruby',
             'php',
             'php_only',
             'bash',
