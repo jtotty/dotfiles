@@ -1,15 +1,18 @@
-echo "ZSH config loaded..."
+echo "ZSH: Loading config..."
+
+# eval $(ssh-agent)
+# ssh-add ~/.ssh/id_ed25519
 
 export TERM=screen-256color
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/.bin:$PATH"
 
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="sorin"
@@ -74,7 +77,7 @@ ZSH_THEME="sorin"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-autosuggestions git)
+plugins=(git zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,67 +89,65 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+export EDITOR="nvim"
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias p="pnpm"
-alias px="pnpm dlx" # Equivalent to npx
 alias vi="nvim"
 alias vim="nvim"
-alias sail="[ -f sail ] && sh sail || sh vendor/bin/sail"
-alias sa="sail artisan"
 alias lg="lazygit"
-alias zshconfig="vi ~/dotfiles/.zshrc"
-alias nvimconfig="vi ~/dotfiles/.config/nvim/"
-alias tmuxconfig="vi ~/dotfiles/.config/tmux/tmux.conf"
-alias starshipconfig="vi ~/dotfiles/.config/starship/starship.toml"
-alias wzconfig="vi /mnt/c/Users/jttot/.wezterm.lua"
-alias sfiles='fzf --preview="batcat --color=always --style=numbers --theme=1337 {}"'
-
-# SSH Agent
-eval ``keychain --eval --agents ssh james_bitbucket_rsa james_github_rsa
-
-# Rust
-. "$HOME/.cargo/env"
-
-# Go
-export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
-
-# pnpm
-export PNPM_HOME="/home/james/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
-# Composer
-export PATH=~/.config/composer/vendor/bin:$PATH
+alias zshconfig="vi ~/.zshrc"
+alias sourcez="source ~/.zshrc"
+alias nvimconfig="vi ~/.config/nvim/"
+alias tmuxconfig="vi ~/.config/tmux/tmux.conf"
+alias starshipconfig="vi ~/.config/starship/starship.toml"
+alias wzconfig="vi ~/.config/wezterm/wezterm.lua"
+alias ghostconfig="vi $HOME/Library/Application\ Support/com.mitchellh.ghostty/config"
+alias sshconfig="vi ~/.ssh/config"
 
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
 
-# bun completions
-[ -s "/home/james/.bun/_bun" ] && source "/home/james/.bun/_bun"
+# Homebrew
+PATH="$HOMEBREW_PREFIX/bin:$PATH"
+eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+source $(brew --prefix asdf)/libexec/asdf.sh
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# GPG Signing
+GPG_TTY=$(tty)
+export GPG_TTY
 
-# fzf
-source <(fzf --zsh)
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
+
+# SSH Agent
+# Check if agent already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    SOCK="/tmp/ssh-agent-$USER"
+    if ! [ -S "$SOCK" ]; then
+        echo "Starting new ssh-agent"
+        eval $(ssh-agent -a $SOCK)
+    else
+        echo "Using current ssh-agent"
+        export SSH_AUTH_SOCK=$SOCK
+    fi
+fi
+
+# Add key if it's not already added
+ssh-add -l &>/dev/null
+if [ $? -eq 1 ]; then
+    echo "Adding ssh-key"
+    ssh-add ~/.ssh/id_ed25519 </dev/null
+fi
+
+echo "ZSH: Done! ✅"

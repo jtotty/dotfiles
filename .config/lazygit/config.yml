@@ -1,26 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 gui:
+  nerdFontsVersion: "3"
+  showIcons: true
+  showFileTree: true
+  mouseEvents: true
   theme:
     activeBorderColor:
-      - '#a6e3a1'
+      - "#89ddff"
       - bold
+    inactiveViewSelectedLineBgColor:
+      - "#2c2f3d"
     inactiveBorderColor:
-      - '#a6adc8'
+      - "#2c2f3d"
     optionsTextColor:
-      - '#89b4fa'
+      - "#3d59a1"
     selectedLineBgColor:
-      - '#313244'
-    cherryPickedCommitBgColor:
-      - '#45475a'
-    cherryPickedCommitFgColor:
-      - '#a6e3a1'
-    unstagedChangesColor:
-      - '#f38ba8'
-    defaultFgColor:
-      - '#cdd6f4'
-    searchingActiveBorderColor:
-      - '#f9e2af'
+      - "#292e42"
+      - bold
+  commitLength:
+    show: true
 
-  nerdFontsVersion: "3"
-
-  authorColors:
-    '*': '#b4befe'
+  spinner:
+    # The frames of the spinner animation.
+    frames:
+      - "⣷ "
+      - "⣯ "
+      - "⣟ "
+      - "⡿ "
+      - "⢿ "
+      - "⣻ "
+      - "⣽ "
+      - "⣾ "
+    rate: 100
